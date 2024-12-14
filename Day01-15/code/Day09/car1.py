@@ -11,7 +11,7 @@ Date: 2018-03-12
 
 class Car(object):
 
-    __slots__ = ('_brand', '_max_speed')
+    __slots__ = ('_brand', '_max_speed')  # 如果一个类设置了该类属性 则init和后续都不能动态添加其他属性 异常AttributeError
 
     def __init__(self, brand, max_speed):
         self._brand = brand
