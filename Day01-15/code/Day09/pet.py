@@ -1,3 +1,7 @@
+"""
+这个案例非常好 从抽象类到继承
+"""
+
 from abc import ABCMeta, abstractmethod
 
 

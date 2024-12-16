@@ -1,39 +1,24 @@
-from multiprocessing import Process, Queue
-from random import randint
-from time import time
+from random import randint, sample
 
 
-def task_handler(curr_list, result_queue):
-    total = 0
-    for number in curr_list:
-        total += number
-    result_queue.put(total)
+def generate():
+    """生成一组随机号码"""
+    red_balls = [x for x in range(1, 34)]
+    selected_balls = sample(red_balls, 6)
+    selected_balls.sort()
+    selected_balls.append(randint(1, 16))
+    return selected_balls
 
 
-def main():
-    processes = []
-    number_list = [x for x in range(1, 100000001)]
-    result_queue = Queue()
-    index = 0
-    # 启动8个进程将数据切片后进行运算
-    for _ in range(8):
-        p = Process(target=task_handler,
-                    args=(number_list[index:index + 12500000], result_queue))
-        index += 12500000
-        processes.append(p)
-        p.start()
-    # 开始记录所有进程执行完成花费的时间
-    start = time()
-    for p in processes:
-        p.join()
-    # 合并执行结果
-    total = 0
-    while not result_queue.empty():
-        total += result_queue.get()
-    print(total)
-    end = time()
-    print('Execution time: ', (end - start), 's', sep='')
+def display(balls):
+    """输出一组双色球号码"""
+    for index, ball in enumerate(balls):
+        print(f'{ball:0>2d}', end=' ')
+        if index == len(balls) - 2:
+            print('|', end=' ')
+    print()
 
 
-if __name__ == '__main__':
-    main()
+num = int(input('机选几注: '))
+for _ in range(num):
+    display(generate())
